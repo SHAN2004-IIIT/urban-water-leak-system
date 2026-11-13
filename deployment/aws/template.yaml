@@ -1,0 +1,111 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Water leak ingestion automation - S3 EventBridge Lambda FIFO SQS
+Parameters:
+  RawBucketName:
+    Type: String
+    Description: Globally unique lowercase S3 bucket name
+Resources:
+  DataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref RawBucketName
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      NotificationConfiguration:
+        EventBridgeConfiguration:
+          EventBridgeEnabled: true
+  DeadLetterQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub '${AWS::StackName}-dead.fifo'
+      FifoQueue: true
+      MessageRetentionPeriod: 1209600
+  IngestionQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub '${AWS::StackName}-ingestion.fifo'
+      FifoQueue: true
+      VisibilityTimeout: 900
+      ReceiveMessageWaitTimeSeconds: 20
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt DeadLetterQueue.Arn
+        maxReceiveCount: 3
+  RouterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub '${AWS::StackName}-router'
+      CodeUri: .
+      Handler: lambda_handler.lambda_handler
+      Runtime: python3.12
+      Timeout: 15
+      MemorySize: 128
+      Environment:
+        Variables:
+          RAW_BUCKET: !Ref DataBucket
+          QUEUE_URL: !Ref IngestionQueue
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action: sqs:SendMessage
+              Resource: !GetAtt IngestionQueue.Arn
+  UploadRule:
+    Type: AWS::Events::Rule
+    Properties:
+      EventPattern:
+        source: [aws.s3]
+        detail-type: [Object Created]
+        detail:
+          bucket:
+            name: [!Ref DataBucket]
+          object:
+            key: [raw/meter_readings.csv]
+      State: ENABLED
+      Targets:
+        - Id: RouteUploadedFile
+          Arn: !GetAtt RouterFunction.Arn
+  UploadRulePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref RouterFunction
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt UploadRule.Arn
+  DailyRule:
+    Type: AWS::Events::Rule
+    Properties:
+      ScheduleExpression: rate(1 day)
+      State: DISABLED
+      Targets:
+        - Id: DailyRefresh
+          Arn: !GetAtt RouterFunction.Arn
+          Input: '{"source":"aws.events","detail":{"action":"refresh"}}'
+  DailyRulePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref RouterFunction
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt DailyRule.Arn
+Outputs:
+  BucketName:
+    Value: !Ref DataBucket
+  QueueUrl:
+    Value: !Ref IngestionQueue
+  QueueArn:
+    Value: !GetAtt IngestionQueue.Arn
+  DeadLetterQueueUrl:
+    Value: !Ref DeadLetterQueue
+  RouterFunctionName:
+    Value: !Ref RouterFunction
+  DailyRuleName:
+    Value: !Ref DailyRule

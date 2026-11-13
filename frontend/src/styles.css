@@ -1,0 +1,374 @@
+
+:root {
+  font: 15px system-ui, Segoe UI, sans-serif;
+  color: #1f2937;
+  background: #f6f8fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: #165ca8;
+  color: white;
+  border: 0;
+  padding: 10px 14px;
+  border-radius: 6px;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button.secondary {
+  background: #e8eef6;
+  color: #234;
+}
+
+h1 {
+  font-size: 23px;
+  margin: 0 0 8px;
+}
+
+h2 {
+  margin: 0 0 4px;
+  font-size: 20px;
+}
+
+h3 {
+  margin: 0 0 16px;
+}
+
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+aside {
+  width: 220px;
+  background: white;
+  border-right: 1px solid #dbe2eb;
+  padding: 24px 16px;
+}
+
+nav {
+  display: grid;
+  gap: 8px;
+  margin-top: 30px;
+}
+
+nav button {
+  background: transparent;
+  color: #27384b;
+  text-align: left;
+}
+
+nav button.active {
+  background: #e6f0fb;
+  color: #145a9c;
+}
+
+main {
+  flex: 1;
+  min-width: 0;
+  padding: 30px;
+  max-width: 1500px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  gap: 14px;
+}
+
+header > div:last-child {
+  display: flex;
+  gap: 8px;
+}
+
+.muted,
+small {
+  color: #66758a;
+}
+
+.panel {
+  background: white;
+  border: 1px solid #dce3eb;
+  border-radius: 9px;
+  padding: 22px;
+  margin-bottom: 20px;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.metrics strong {
+  display: block;
+  font-size: 29px;
+  margin-top: 8px;
+}
+
+.two {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.scroll {
+  overflow: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13px;
+}
+
+th,
+td {
+  text-align: left;
+  border-bottom: 1px solid #e4eaf0;
+  padding: 10px 12px;
+  white-space: nowrap;
+}
+
+th {
+  background: #f7f9fc;
+  text-transform: capitalize;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0;
+  color: #465568;
+  font-size: 13px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #c8d2dd;
+  border-radius: 6px;
+  background: white;
+  color: #172b4a;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.alert {
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 14px;
+}
+
+.error {
+  background: #feecec;
+  color: #8b1d1d;
+}
+
+.ok {
+  background: #e8f9ef;
+  color: #135f37;
+}
+
+pre {
+  background: #f4f7fb;
+  padding: 16px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Login Page */
+
+.login {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+.login .panel {
+  width: min(420px, 100%);
+}
+
+.login button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* Part 7: Crew Scheduling Calendar */
+
+.calendar th,
+.calendar td {
+  border: 1px solid #dce3eb;
+  vertical-align: top;
+  min-width: 140px;
+}
+
+.calendar-cell {
+  min-height: 100px;
+}
+
+.calendar-job {
+  padding: 7px;
+  margin-top: 6px;
+  background: #e4f0fe;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
+.calendar small {
+  font-size: 11px;
+}
+
+/* Responsive Layout */
+
+@media (max-width: 800px) {
+  .app {
+    display: block;
+  }
+
+  aside {
+    width: auto;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  main {
+    padding: 16px;
+  }
+
+  .metrics,
+  .two {
+    grid-template-columns: 1fr;
+  }
+
+  header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  /* Urban Water Leak Operations — professional visual refresh.
+   Append to the END of frontend/src/styles.css.
+   CSS only: no API, JSX, or scheduling logic changes. */
+:root {
+  font-family: Inter, 'Segoe UI', system-ui, sans-serif;
+  color: #243449;
+  background: #f1f5f9;
+  font-synthesis: none;
+}
+body { background: #f1f5f9; }
+.app { background: #f1f5f9; }
+
+/* Sidebar */
+.app > aside {
+  background: linear-gradient(180deg, #172b45 0%, #10243a 100%);
+  color: #f4f8fc;
+  border-right: 1px solid #253e59;
+  width: 244px;
+  padding: 28px 16px 24px;
+  flex-shrink: 0;
+  box-shadow: 3px 0 16px rgba(20, 42, 65, .07);
+}
+.app > aside h2 {
+  margin: 0 10px 5px;
+  color: #fff;
+  font-size: 22px;
+  letter-spacing: -.4px;
+  font-weight: 750;
+}
+.app > aside .muted {
+  color: #a9bdcf;
+  margin: 0 10px;
+  font-size: 12px;
+  letter-spacing: .5px;
+}
+.app > aside nav { margin-top: 34px; gap: 6px; }
+.app > aside nav button {
+  background: transparent;
+  color: #c6d4e2;
+  padding: 13px 15px;
+  border-radius: 9px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 550;
+  border-left: 3px solid transparent;
+  transition: background .18s ease, color .18s ease;
+}
+.app > aside nav button:hover { background: #263e56; color: #fff; }
+.app > aside nav button.active {
+  background: #2e5267;
+  color: #fff;
+  border-left-color: #7cc6c1;
+  font-weight: 700;
+}
+.app > aside nav button:focus-visible,
+button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible {
+  outline: 2px solid #65b8b7;
+  outline-offset: 2px;
+}
+
+/* Main content */
+.app > main { padding: 32px 34px; }
+.app > main > header { margin-bottom: 26px; }
+.app > main > header h1 {
+  color: #172b45;
+  font-size: 26px;
+  font-weight: 750;
+  letter-spacing: -.5px;
+}
+.app > main > header .muted { color: #64748b; font-size: 13px; }
+.panel {
+  background: #fff;
+  border: 1px solid #e0e7ef;
+  border-radius: 12px;
+  padding: 23px;
+  box-shadow: 0 3px 16px rgba(21, 42, 66, .035);
+}
+.panel h3 { color: #1f334b; font-size: 17px; letter-spacing: -.2px; }
+.metrics { gap: 16px; }
+.metrics .panel { border-top: 3px solid #397c83; }
+.metrics strong { color: #173956; font-size: 31px; }
+.muted, small { color: #657589; }
+
+/* Buttons */
+button {
+  background: #2f7480;
+  color: white;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background .15s ease, transform .15s ease;
+}
+button:hover:not(:disabled) { background: #285f69; }
+button:active:not(:disabled) { transform: translateY(1px); }
+button.secondary { background: #e7edf4; color: #263f59; }
+button.secondary:hover:not(:disabled) { background: #d8e3ed; }
+}

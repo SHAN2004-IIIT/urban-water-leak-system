@@ -1,0 +1,26 @@
+
+services:
+  backend:
+    image: water-leak-backend:local
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://water-leak-postgres:5432/water_leak_db
+      SPRING_DATASOURCE_USERNAME: wateruser
+      SPRING_DATASOURCE_PASSWORD: waterpass
+      JAVA_TOOL_OPTIONS: "-Duser.timezone=UTC"
+    expose:
+      - "8080"
+    networks:
+      - water-leak-app
+
+  frontend:
+    image: water-leak-frontend:local
+    ports:
+      - "127.0.0.1:8088:80"
+    depends_on:
+      - backend
+    networks:
+      - water-leak-app
+
+networks:
+  water-leak-app:
+    external: true
