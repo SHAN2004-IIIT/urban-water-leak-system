@@ -1,6 +1,6 @@
 import SchedulingPage from './pages/SchedulingPage.jsx';
 import React,{useEffect,useState} from 'react';
-const BASE=import.meta.env.VITE_API_BASE||'http://127.0.0.1:8080';
+const BASE=import.meta.env.VITE_API_BASE||'';
 function useApi(auth){
  return async (path,method='GET',body)=>{
   const response=await fetch(BASE+path,{

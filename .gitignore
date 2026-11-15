@@ -22,3 +22,7 @@ data/scoring/
 warehouse/exports/
 
 .aws/
+
+.env.ec2
+*.dump
+water_leak.dump
